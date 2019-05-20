@@ -1,7 +1,7 @@
 README
 ======
 
-cosmo.py: Simple and handy command line calculator of cosmological quantities. It relies in astropy.cosmology module for the actual calculations
+cosmo.py: Simple and handy command line calculator of cosmological quantities. It relies in astropy.cosmology module for the actual calculations. Just download it where your bash shell can find it and voila!
 
 usage: cosmo.py [-h] [-c COSMO] [-Om Omatter] [-H0 H0]
                 redshifts [redshifts ...]
