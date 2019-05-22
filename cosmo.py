@@ -1,22 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Command line calculator of cosmological quantities
 
-@author: Miguel Verdugo
-"""
-
-__author__ = "Miguel Verdugo"
-__email__  = "miguel.verdugo@univie.ac.at"
-
-long_description ="""Command line calculator of cosmological quantities.
+"""Command line calculator of cosmological quantities.
 For user provided redshift(s) and optionally a provided (flat) cosmology, the calculator returns
 
 1) Distance modulus, DM 
 2) Scale (kpc/arcsec), Scale
 3) Luminosity Distance, DL
 4) Angular Diameter Distance, DA
-5) Age of the Universe, Age
+5) Age of the Universe at the specified redshifts, Age
 6) Lookback time, tL 
 
 Built-in cosmologies
@@ -40,15 +32,12 @@ cosmo.py 0.3 0.4 0.5 -Om 0.25 -H0 100
 """
 
 import argparse
-import sys
 import importlib
 import numpy as np
 from astropy.table import Table, Column
 
 
-
 cosmo_models = ["Planck15", "Planck13", "WMAP9", "WMAP7", "WMAP5", "FlatLambdaCDM"]
-
 
 
 def get_arguments():
@@ -57,8 +46,7 @@ def get_arguments():
 
     parser = argparse.ArgumentParser(prog="cosmo.py",
                                     formatter_class=argparse.RawDescriptionHelpFormatter,
-                                    epilog=long_description)
-
+                                    epilog=__doc__)
 
     parser.add_argument('redshifts', type=float, nargs='+', 
                         help='list of redshifts')
@@ -115,12 +103,11 @@ def check_z(z):
 def create_table(z, cosmo):
 
     redshift = Column(data=z, name="z")
-    DM = Column(data=np.round(cosmo.distmod(z)), name="DM")
+    DM    = Column(data=np.round(cosmo.distmod(z)), name="DM")
     scale = Column(data=np.round(1/cosmo.arcsec_per_kpc_proper(z),3), name="Scale")
-    LD = Column(data=np.round(cosmo.luminosity_distance(z),2), name="DL")
-# np.round(cosmo.angular_diameter_distance(z),2))
-    Age = Column(data=np.round(cosmo.age(z),2), name="Age")
-    tL = Column(data=np.round(cosmo.lookback_time(z),2), name="tL")
+    LD    = Column(data=np.round(cosmo.luminosity_distance(z),2), name="DL")
+    Age   = Column(data=np.round(cosmo.age(z),2), name="Age")
+    tL    = Column(data=np.round(cosmo.lookback_time(z),2), name="tL")
 
     table = Table([redshift, DM, scale, LD, Age, tL])
 
@@ -130,6 +117,7 @@ def create_table(z, cosmo):
 def main():
 
     args = get_arguments()
+
     z = args.redshifts
     cosmo_model = args.cosmo
     Om = args.Om
@@ -143,14 +131,5 @@ def main():
     print(table_out)
 
 
-
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
